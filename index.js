@@ -13,7 +13,7 @@ const client = new Client({
 // CONFIGURATION - Variables d'environnement
 // ========================================
 const config = {
-    token: process.env.TOKEN,
+    token: process.env.DISCORD_TOKEN,
     
     // Pour le système d'absences
     staffRoleId: process.env.STAFF_ROLE_ID,
