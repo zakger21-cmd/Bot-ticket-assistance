@@ -1,0 +1,59 @@
+{
+  "name": "bot-tickets-spvm",
+  "version": "1.0.0",
+  "description": "Système de tickets SPVM",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "dependencies": {
+    "discord.js": "^14.14.1",
+    "express": "^4.18.2"
+  }
+}
+```
+4. Clique sur "Commit changes"
+
+---
+
+### **ÉTAPE 3: Déployer sur Render**
+
+1. Va sur **Render.com**
+2. Clique sur "New +" → "Web Service"
+3. Connecte ton repository GitHub `bot-tickets-spvm`
+4. Configure:
+   - **Name:** `bot-tickets-spvm`
+   - **Runtime:** Node
+   - **Build Command:** `npm install`
+   - **Start Command:** `node index.js`
+   - **Instance Type:** Free
+
+---
+
+### **ÉTAPE 4: Ajouter les variables d'environnement** ⚠️ TRÈS IMPORTANT
+
+Avant de cliquer sur "Create Web Service", descends jusqu'à **"Environment Variables"**:
+
+**Variable 1:**
+- Key: `TOKEN`
+- Value: Ton token de bot Discord
+
+**Variable 2:**
+- Key: `ADMIN_ROLE_ID`
+- Value: L'ID du rôle Administration (les chiffres que tu as notés)
+
+**Variable 3:**
+- Key: `TICKET_CATEGORY_ID`
+- Value: L'ID de la catégorie "🎫 TICKETS SPVM" (les chiffres que tu as notés)
+
+Puis clique sur "Create Web Service"
+
+---
+
+### **ÉTAPE 5: Vérifier que le bot fonctionne**
+
+1. Regarde les **Logs** sur Render
+2. Tu devrais voir:
+```
+   ✅ Bot SPVM connecté en tant que...
+   Serveur web démarré sur le port 3000
