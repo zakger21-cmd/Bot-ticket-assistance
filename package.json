@@ -1,7 +1,7 @@
 {
-  "name": "bot-tickets-spvm",
+  "name": "bot-spvm-complet",
   "version": "1.0.0",
-  "description": "Système de tickets SPVM",
+  "description": "Bot SPVM - Absences + Tickets",
   "main": "index.js",
   "scripts": {
     "start": "node index.js"
