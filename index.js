@@ -248,7 +248,7 @@ client.on('interactionCreate', async interaction => {
             if (channel) {
                 return interaction.reply({ 
                     content: `❌ Tu as déjà une absence en cours: <#${existingTicket}>`, 
-                    ephemeral: true 
+                    flags: 64
                 });
             }
         }
@@ -294,7 +294,7 @@ client.on('interactionCreate', async interaction => {
     // SYSTÈME D'ABSENCES - Formulaire soumis
     // ========================================
     if (interaction.isModalSubmit() && interaction.customId === 'absence_form') {
-        await interaction.deferReply({ ephemeral: true });
+        await interaction.deferReply({ flags: 64 });
 
         const motif = interaction.fields.getTextInputValue('motif');
         const dateDepartStr = interaction.fields.getTextInputValue('date_depart');
@@ -558,7 +558,7 @@ client.on('interactionCreate', async interaction => {
         if (!interaction.channel.name.startsWith('absence-')) {
             return interaction.reply({ 
                 content: '❌ Cette commande ne fonctionne que dans un salon d\'absence!', 
-                ephemeral: true 
+                 flags: 64
             });
         }
 
