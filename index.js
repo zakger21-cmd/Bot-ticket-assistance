@@ -13,8 +13,10 @@ const client = new Client({
 // CONFIGURATION
 // ========================================
 const config = {
-    token: process.env.DISCORD_TOKEN,
+    token: process.env.TOKEN
+};
 
+client.login(config.token);
     staffRoleId: process.env.STAFF_ROLE_ID,
     absenceRoleId: process.env.ABSENCE_ROLE_ID,
     demandesChannelId: process.env.DEMANDES_CHANNEL_ID,
