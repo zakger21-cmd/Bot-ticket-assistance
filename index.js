@@ -12,6 +12,7 @@ const client = new Client({
 // ========================================
 // CONFIGURATION
 // ========================================
+console.log("TOKEN PRESENT ?", !!process.env.DISCORD_TOKEN);
 client.login(process.env.DISCORD_TOKEN);
     // Système d'absences
     staffRoleId: process.env.STAFF_ROLE_ID,
