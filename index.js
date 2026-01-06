@@ -13,19 +13,18 @@ const client = new Client({
 // CONFIGURATION
 // ========================================
 const config = {
-    token: process.env.TOKEN
-};
+    token: process.env.TOKEN,
 
-client.login(config.token);
+    // Système d'absences
     staffRoleId: process.env.STAFF_ROLE_ID,
     absenceRoleId: process.env.ABSENCE_ROLE_ID,
     demandesChannelId: process.env.DEMANDES_CHANNEL_ID,
     absenceCategoryId: null,
 
+    // Système de tickets SPVM
     adminRoleId: process.env.ADMIN_ROLE_ID,
     ticketCategoryId: process.env.TICKET_CATEGORY_ID
 };
-
 
 // ========================================
 // STOCKAGE
