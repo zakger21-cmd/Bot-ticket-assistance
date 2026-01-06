@@ -12,8 +12,7 @@ const client = new Client({
 // ========================================
 // CONFIGURATION
 // ========================================
-const config = {
-    token: process.env.TOKEN,
+client.login(process.env.DISCORD_TOKEN);
     // Système d'absences
     staffRoleId: process.env.STAFF_ROLE_ID,
     absenceRoleId: process.env.ABSENCE_ROLE_ID,
@@ -692,16 +691,19 @@ if (interaction.isButton() && interaction.customId === 'close_ticket') {
 // CONNEXION
 // ========================================
 client.login(config.token);
+
 // ========================================
 // SERVEUR WEB POUR RENDER
 // ========================================
 const express = require('express');
 const app = express();
 const PORT = process.env.PORT || 3000;
+
 app.get('/', (req, res) => {
-res.send('🚔 Bot SPVM - Système complet en ligne! ✅');
+    res.send('🚔 Bot SPVM - Système complet en ligne! ✅');
 });
+
 app.listen(PORT, () => {
-console.log(Serveur web sur port ${PORT});
-});</parameter>
-<parameter name="old_str">            await interaction</parameter>
+    console.log(`Serveur web sur port ${PORT}`);
+});
+
