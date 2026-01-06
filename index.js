@@ -658,7 +658,6 @@ client.on('interactionCreate', async interaction => {
 
             await interaction
             <function_calls>
-<invoke name="artifacts">
 <parameter name="command">update</parameter>
 <parameter name="id">bot_complet_fusionne</parameter>
 <parameter name="new_str">            await interaction.editReply({ content: ✅ Plainte déposée: <#${ticketChannel.id}> });
@@ -706,4 +705,3 @@ app.listen(PORT, () => {
 console.log(Serveur web sur port ${PORT});
 });</parameter>
 <parameter name="old_str">            await interaction</parameter>
-</invoke>
