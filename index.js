@@ -656,26 +656,25 @@ client.on('interactionCreate', async interaction => {
                 components: [closeButton]
             });
 
-            await interaction.editReply({ content: `✅ Plainte déposée: <#${ticketChannel.id}>` });
-        } catch (error) {
-            console.error(error);
-            await interaction.editReply({ content: '❌ Erreur lors du dépôt de la plainte.' });
-        }
-    }
-
-    // ========== SYSTÈME TICKETS SPVM - Fermer ==========
-    if (interaction.isButton() && interaction.custom
-        <function_calls>
+            await interaction
+            <function_calls>
 <invoke name="artifacts">
 <parameter name="command">update</parameter>
 <parameter name="id">bot_complet_fusionne</parameter>
-<parameter name="new_str">    // ========== SYSTÈME TICKETS SPVM - Fermer ==========
-if (interaction.isButton() && interaction.customId === 'close_ticket') {
-if (!interaction.channel.name.startsWith('plainte-') &&
-!interaction.channel.name.startsWith('demande-') &&
-!interaction.channel.name.startsWith('info-')) {
-return interaction.reply({ content: '❌ Pas un ticket SPVM!', ephemeral: true });
+<parameter name="new_str">            await interaction.editReply({ content: ✅ Plainte déposée: <#${ticketChannel.id}> });
+} catch (error) {
+console.error(error);
+await interaction.editReply({ content: '❌ Erreur lors du dépôt de la plainte.' });
 }
+}
+// ========== SYSTÈME TICKETS SPVM - Fermer ==========
+if (interaction.isButton() && interaction.customId === 'close_ticket') {
+    if (!interaction.channel.name.startsWith('plainte-') && 
+        !interaction.channel.name.startsWith('demande-') && 
+        !interaction.channel.name.startsWith('info-')) {
+        return interaction.reply({ content: '❌ Pas un ticket SPVM!', ephemeral: true });
+    }
+
     const closeEmbed = new EmbedBuilder()
         .setColor('#ff0000')
         .setTitle('🔒 Fermeture')
@@ -706,5 +705,5 @@ res.send('🚔 Bot SPVM - Système complet en ligne! ✅');
 app.listen(PORT, () => {
 console.log(Serveur web sur port ${PORT});
 });</parameter>
-<parameter name="old_str">    // ========== SYSTÈME TICKETS SPVM - Fermer ==========
-if (interaction.isButton() && interaction.custom</parameter>
+<parameter name="old_str">            await interaction</parameter>
+</invoke>
