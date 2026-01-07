@@ -1,6 +1,17 @@
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, PermissionFlagsBits, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const express = require('express');
 
+const app = express();
+const PORT = process.env.PORT || 3000;
+
+app.get('/', (req, res) => {
+    res.send('Bot SPVM - Système complet en ligne!');
+});
+
+app.listen(PORT, () => {
+    console.log('Serveur web sur port ' + PORT);
+});
+
 const client = new Client({
     intents: [
         GatewayIntentBits.Guilds,
@@ -25,7 +36,7 @@ const absences = new Map();
 const pendingAbsences = new Map();
 const spvmTickets = new Map();
 
-client.once('ready', () => {
+client.on('ready', () => {
     console.log('Bot connecté: ' + client.user.tag);
     console.log('Système absences: ACTIF');
     console.log('Système tickets SPVM: ACTIF');
@@ -638,14 +649,3 @@ client.on('interactionCreate', async interaction => {
 });
 
 client.login(config.token);
-
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-    res.send('Bot SPVM - Système complet en ligne!');
-});
-
-app.listen(PORT, () => {
-    console.log('Serveur web sur port ' + PORT);
-});
