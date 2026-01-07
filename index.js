@@ -660,9 +660,7 @@ client.on('interactionCreate', async interaction => {
 
             await interaction
             <function_calls>
-<parameter name="command">update</parameter>
-<parameter name="id">bot_complet_fusionne</parameter>
-<parameter name="new_str">            await interaction.editReply({ content: ✅ Plainte déposée: <#${ticketChannel.id}> });
+ await interaction.editReply({ content: ✅ Plainte déposée: <#${ticketChannel.id}> });
 } catch (error) {
 console.error(error);
 await interaction.editReply({ content: '❌ Erreur lors du dépôt de la plainte.' });
