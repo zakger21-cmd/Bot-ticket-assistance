@@ -118,8 +118,6 @@ function parseDate(dateStr) {
 
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
-    
-    console.log('Message reçu:', message.content, 'de', message.author.tag);
 
     if (message.content === '!setup-absence') {
         if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
@@ -200,10 +198,7 @@ client.on('interactionCreate', async interaction => {
             const existingId = absenceTickets.get(interaction.user.id);
             const existingChannel = interaction.guild.channels.cache.get(existingId);
             if (existingChannel) {
-                return interaction.reply({ 
-                    content: 'Tu as déjà une absence: <#' + existingId + '>', 
-                    flags: 64
-                });
+                return interaction.reply({ content: 'Tu as déjà une absence: <#' + existingId + '>', ephemeral: true });
             }
             absenceTickets.delete(interaction.user.id);
         }
@@ -246,7 +241,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (interaction.isModalSubmit() && interaction.customId === 'absence_form') {
-        await interaction.deferReply({ flags: 64 });
+        await interaction.deferReply({ ephemeral: true });
 
         const motif = interaction.fields.getTextInputValue('motif');
         const dateDepartStr = interaction.fields.getTextInputValue('date_depart');
@@ -339,12 +334,12 @@ client.on('interactionCreate', async interaction => {
 
     if (interaction.isButton() && interaction.customId === 'accept_absence') {
         if (!interaction.member.roles.cache.has(config.staffRoleId)) {
-            return interaction.reply({ content: 'Staff uniquement!', flags: 64 });
+            return interaction.reply({ content: 'Staff uniquement!', ephemeral: true });
         }
 
         const request = pendingAbsences.get(interaction.message.id);
         if (!request) {
-            return interaction.reply({ content: 'Demande introuvable!', flags: 64 });
+            return interaction.reply({ content: 'Demande introuvable!', ephemeral: true });
         }
 
         const member = await interaction.guild.members.fetch(request.userId);
@@ -397,12 +392,12 @@ client.on('interactionCreate', async interaction => {
 
     if (interaction.isButton() && interaction.customId === 'decline_absence') {
         if (!interaction.member.roles.cache.has(config.staffRoleId)) {
-            return interaction.reply({ content: 'Staff uniquement!', flags: 64 });
+            return interaction.reply({ content: 'Staff uniquement!', ephemeral: true });
         }
 
         const request = pendingAbsences.get(interaction.message.id);
         if (!request) {
-            return interaction.reply({ content: 'Demande introuvable!', flags: 64 });
+            return interaction.reply({ content: 'Demande introuvable!', ephemeral: true });
         }
 
         const member = await interaction.guild.members.fetch(request.userId);
@@ -438,7 +433,7 @@ client.on('interactionCreate', async interaction => {
 
     if (interaction.isButton() && interaction.customId === 'close_absence') {
         if (!interaction.channel.name.startsWith('absence-')) {
-            return interaction.reply({ content: 'Pas un salon d\'absence!', flags: 64 });
+            return interaction.reply({ content: 'Pas un salon d\'absence!', ephemeral: true });
         }
 
         const embed = new EmbedBuilder()
@@ -505,7 +500,7 @@ client.on('interactionCreate', async interaction => {
             return interaction.showModal(modal);
         }
 
-        await interaction.deferReply({ flags: 64 });
+        await interaction.deferReply({ ephemeral: true });
 
         if (spvmTickets.has(interaction.user.id)) {
             const existingId = spvmTickets.get(interaction.user.id);
@@ -573,7 +568,7 @@ client.on('interactionCreate', async interaction => {
     }
 
     if (interaction.isModalSubmit() && interaction.customId === 'plainte_form') {
-        await interaction.deferReply({ flags: 64 });
+        await interaction.deferReply({ ephemeral: true });
 
         if (spvmTickets.has(interaction.user.id)) {
             const existingId = spvmTickets.get(interaction.user.id);
