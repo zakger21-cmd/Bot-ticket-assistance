@@ -122,9 +122,12 @@ client.on('messageCreate', async message => {
     console.log('Message reçu:', message.content, 'de', message.author.tag);
 
     if (message.content === '!setup-absence') {
+        console.log('Commande !setup-absence détectée');
         if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            console.log('Utilisateur non admin');
             return message.reply('Administrateur requis!');
         }
+        console.log('Utilisateur est admin, création du panneau...');
 
         let category = message.guild.channels.cache.find(c => c.name === 'ABSENCES' && c.type === ChannelType.GuildCategory);
         if (!category) {
@@ -150,14 +153,20 @@ client.on('messageCreate', async message => {
                     .setStyle(ButtonStyle.Primary)
             );
 
+        console.log('Envoi du panneau d\'absences...');
         await message.channel.send({ embeds: [embed], components: [row] });
+        console.log('Panneau d\'absences envoyé avec succès!');
         await message.delete();
+        console.log('Message de commande supprimé');
     }
 
     if (message.content === '!setup-tickets') {
+        console.log('Commande !setup-tickets détectée');
         if (!message.member.permissions.has(PermissionFlagsBits.Administrator)) {
+            console.log('Utilisateur non admin');
             return message.reply('Administrateur requis!');
         }
+        console.log('Utilisateur est admin, création du panneau...');
 
         const embed = new EmbedBuilder()
             .setColor('#0066ff')
@@ -188,8 +197,11 @@ client.on('messageCreate', async message => {
             ]);
 
         const row = new ActionRowBuilder().addComponents(selectMenu);
+        console.log('Envoi du panneau de tickets...');
         await message.channel.send({ embeds: [embed], components: [row] });
+        console.log('Panneau de tickets envoyé avec succès!');
         await message.delete().catch(() => {});
+        console.log('Message de commande supprimé');
     }
 });
 
