@@ -653,16 +653,24 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-console.log('Tentative de connexion du bot...');
+console.log('='.repeat(50));
+console.log('Tentative de connexion du bot Discord...');
 console.log('Token présent:', config.token ? 'OUI' : 'NON');
 console.log('Token longueur:', config.token ? config.token.length : 0);
+console.log('Token début:', config.token ? config.token.substring(0, 10) + '...' : 'N/A');
+console.log('='.repeat(50));
 
 client.login(config.token)
     .then(() => {
-        console.log('Login réussi!');
+        console.log('=== LOGIN REUSSI ===');
     })
     .catch(error => {
-        console.error('ERREUR DE CONNEXION:', error);
-        console.error('Code erreur:', error.code);
+        console.error('='.repeat(50));
+        console.error('ERREUR CRITIQUE DE CONNEXION DISCORD:');
+        console.error('Type:', error.name);
+        console.error('Code:', error.code);
         console.error('Message:', error.message);
+        console.error('Stack:', error.stack);
+        console.error('='.repeat(50));
+        process.exit(1);
     });
