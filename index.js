@@ -654,23 +654,47 @@ client.on('interactionCreate', async interaction => {
 });
 
 console.log('='.repeat(50));
-console.log('Tentative de connexion du bot Discord...');
+console.log('DEMARRAGE DU BOT DISCORD');
 console.log('Token présent:', config.token ? 'OUI' : 'NON');
 console.log('Token longueur:', config.token ? config.token.length : 0);
 console.log('Token début:', config.token ? config.token.substring(0, 10) + '...' : 'N/A');
+console.log('Staff Role ID:', config.staffRoleId || 'NON DEFINI');
+console.log('Admin Role ID:', config.adminRoleId || 'NON DEFINI');
 console.log('='.repeat(50));
+
+const loginTimeout = setTimeout(() => {
+    console.error('!'.repeat(50));
+    console.error('TIMEOUT: Le bot ne se connecte pas après 30 secondes!');
+    console.error('Causes possibles:');
+    console.error('1. Token invalide');
+    console.error('2. Intents non activés sur Discord Developer Portal');
+    console.error('3. Problème réseau Render');
+    console.error('!'.repeat(50));
+}, 30000);
+
+console.log('Appel de client.login()...');
 
 client.login(config.token)
     .then(() => {
-        console.log('=== LOGIN REUSSI ===');
+        clearTimeout(loginTimeout);
+        console.log('='.repeat(50));
+        console.log('LOGIN DISCORD REUSSI!');
+        console.log('='.repeat(50));
     })
     .catch(error => {
+        clearTimeout(loginTimeout);
         console.error('='.repeat(50));
-        console.error('ERREUR CRITIQUE DE CONNEXION DISCORD:');
+        console.error('ERREUR CRITIQUE DISCORD:');
         console.error('Type:', error.name);
         console.error('Code:', error.code);
         console.error('Message:', error.message);
-        console.error('Stack:', error.stack);
+        if (error.code === 'TokenInvalid') {
+            console.error('');
+            console.error('>>> LE TOKEN EST INVALIDE! <<<');
+            console.error('>>> Va sur Discord Developer Portal et Reset Token! <<<');
+        }
         console.error('='.repeat(50));
         process.exit(1);
     });
+
+console.log('client.login() appelé, en attente de connexion...');
