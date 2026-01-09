@@ -2,7 +2,7 @@ const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder
 const express = require('express');
 // Imports auto-modération
 const { setupAutomod } = require('./automod/automodListener');
-const { automodCommands } = require('./automod/automodCommands');
+const { automodCommands } = require('./automod/automod/automodCommands');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
