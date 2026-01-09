@@ -1,6 +1,8 @@
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, PermissionFlagsBits, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const express = require('express');
-
+// Imports auto-modération
+const { setupAutomod } = require('./automod/automodListener');
+const { automodCommands } = require('./automod/automodCommands');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
@@ -36,12 +38,22 @@ const absences = new Map();
 const pendingAbsences = new Map();
 const spvmTickets = new Map();
 
-client.on('ready', () => {
+client.on('ready', async () => {
     console.log('Bot connecté: ' + client.user.tag);
+    setupAutomod(client);
+    console.log('Auto-modération: ACTIF');
     console.log('Système absences: ACTIF');
     console.log('Système tickets SPVM: ACTIF');
     setInterval(checkAbsences, 3600000);
     checkAbsences();
+    // Enregistrer commandes automod
+    try {
+        const commands = automodCommands.map(cmd => cmd.data.toJSON());
+        await client.application.commands.set(commands);
+        console.log('Commandes automod enregistrées!');
+    } catch (error) {
+        console.error('Erreur commandes automod:', error);
+    }
 });
 
 async function checkAbsences() {
@@ -709,4 +721,17 @@ client.login(config.token)
         process.exit(1);
     });
 
-console.log('client.login() appelé, en attente de connexion...');
+console.log // Gestion commandes slash automod
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isChatInputCommand()) return;
+    
+    const command = automodCommands.find(cmd => cmd.data.name === interaction.commandName);
+    
+    if (command) {
+        try {
+            await command.execute(interaction);
+        } catch (error) {
+            console.error('Erreur commande automod:', error);
+        }
+    }
+});('client.login() appelé, en attente de connexion...');
