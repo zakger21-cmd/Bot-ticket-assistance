@@ -5,7 +5,8 @@ const { setupAutomod } = require('./automod/automodListener');
 const { automodCommands } = require('./automod/automodCommands');
 const app = express();
 const PORT = process.env.PORT || 3000;
-
+// Système d'avertissements SPVM
+const { warnCommands } = require('./warns/warnSystem');
 app.get('/', (req, res) => {
     res.send('Bot SPVM - Système complet en ligne!');
 });
@@ -55,7 +56,19 @@ client.on('ready', async () => {
         console.error('Erreur commandes automod:', error);
     }
 });
-
+// Enregistrer commandes warn
+    try {
+        const warnCmds = warnCommands.map(cmd => cmd.data.toJSON());
+        const existingCommands = await client.application.commands.fetch();
+        
+        for (const cmd of warnCmds) {
+            await client.application.commands.create(cmd);
+        }
+        
+        console.log('Commandes warn enregistrées!');
+    } catch (error) {
+        console.error('Erreur commandes warn:', error);
+    }
 async function checkAbsences() {
     const now = new Date();
     now.setHours(0, 0, 0, 0);
@@ -735,3 +748,20 @@ client.on('interactionCreate', async interaction => {
         }
     }
 });('client.login() appelé, en attente de connexion...');
+// Gestion commandes warn
+    if (interaction.isChatInputCommand()) {
+        const warnCommand = warnCommands.find(cmd => cmd.data.name === interaction.commandName);
+        
+        if (warnCommand) {
+            try {
+                await warnCommand.execute(interaction);
+            } catch (error) {
+                console.error('Erreur commande warn:', error);
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.followUp({ content: '❌ Erreur!', flags: 64 });
+                } else {
+                    await interaction.reply({ content: '❌ Erreur!', flags: 64 });
+                }
+            }
+        }
+    }
