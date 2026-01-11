@@ -11,18 +11,6 @@ const userWarnings = new Map();
 const warnConfig = {
     logChannelId: null, // ID du salon de logs (à configurer)
     staffRoleId: null,  // ID du rôle staff (à configurer)
-    
-    // Sanctions automatiques selon le nombre d'avertissements
-    autoSanctions: {
-        enabled: true,
-        levels: [
-            { warns: 2, action: 'timeout', duration: 3600000 },      // 2 warns = 1h timeout
-            { warns: 4, action: 'timeout', duration: 86400000 },     // 4 warns = 24h timeout
-            { warns: 6, action: 'kick' },                            // 6 warns = kick
-            { warns: 8, action: 'ban' }                              // 8 warns = ban
-        ]
-    },
-    
     colors: {
         inactivite: '#FFA500',
         comportement: '#FF0000',
@@ -175,36 +163,6 @@ async function handleWarn(interaction) {
     
     const warnCount = userWarnings.get(agent.id).length;
     
-    // Appliquer une sanction automatique si configuré
-    let autoSanctionApplied = null;
-    if (warnConfig.autoSanctions.enabled) {
-        try {
-            const member = await interaction.guild.members.fetch(agent.id);
-            
-            for (const level of warnConfig.autoSanctions.levels) {
-                if (warnCount >= level.warns) {
-                    autoSanctionApplied = level;
-                }
-            }
-            
-            if (autoSanctionApplied) {
-                switch (autoSanctionApplied.action) {
-                    case 'timeout':
-                        await member.timeout(autoSanctionApplied.duration, '[SPVM Auto-sanction] ' + warnCount + ' avertissements');
-                        break;
-                    case 'kick':
-                        await member.kick('[SPVM Auto-sanction] ' + warnCount + ' avertissements');
-                        break;
-                    case 'ban':
-                        await member.ban({ reason: '[SPVM Auto-sanction] ' + warnCount + ' avertissements' });
-                        break;
-                }
-            }
-        } catch (error) {
-            console.error('Erreur application auto-sanction:', error);
-        }
-    }
-    
     // Envoyer un MP à l'agent
     try {
         const typeInfo = warnConfig.types.find(t => t.value === type);
@@ -212,7 +170,7 @@ async function handleWarn(interaction) {
             .setColor(warnConfig.colors[type])
             .setTitle('🚨 SPVM – Avertissement Officiel')
             .setDescription(
-                '**Vous avez été averti par l\'administration du Service de Police de la Ville de Montréal.**\n\n' +
+                '**Vous avez reçu un avertissement du Service de Police de la Ville Métropolitaine.**\n\n' +
                 '━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━'
             )
             .addFields(
@@ -222,30 +180,8 @@ async function handleWarn(interaction) {
                 { name: '📋 Raison', value: '```' + raison + '```', inline: false },
                 { name: '👮 Agent émetteur', value: staff.tag, inline: true },
                 { name: '📅 Date', value: '<t:' + Math.floor(Date.now() / 1000) + ':F>', inline: true }
-            );
-        
-        // Ajouter info sur auto-sanction si appliquée
-        if (autoSanctionApplied) {
-            let sanctionText = '';
-            switch (autoSanctionApplied.action) {
-                case 'timeout':
-                    sanctionText = '🔇 Timeout de ' + formatDuration(autoSanctionApplied.duration);
-                    break;
-                case 'kick':
-                    sanctionText = '👢 Expulsion du serveur';
-                    break;
-                case 'ban':
-                    sanctionText = '🔨 Bannissement du serveur';
-                    break;
-            }
-            dmEmbed.addFields({ 
-                name: '⚠️ Sanction automatique appliquée', 
-                value: sanctionText + '\n\n*Vous avez atteint ' + warnCount + ' avertissements.*', 
-                inline: false 
-            });
-        }
-        
-        dmEmbed.setFooter({ text: 'Service de Police de la Ville de Montréal' })
+            )
+            .setFooter({ text: 'Service de Police de la Ville Métropolitaine' })
             .setTimestamp();
         
         await agent.send({ embeds: [dmEmbed] });
@@ -270,30 +206,8 @@ async function handleWarn(interaction) {
                         { name: '🆔 ID', value: '`' + warnId + '`', inline: true },
                         { name: '📅 Date', value: '<t:' + Math.floor(Date.now() / 1000) + ':R>', inline: true },
                         { name: '📋 Raison', value: raison, inline: false }
-                    );
-                
-                // Ajouter info auto-sanction dans les logs
-                if (autoSanctionApplied) {
-                    let sanctionText = '';
-                    switch (autoSanctionApplied.action) {
-                        case 'timeout':
-                            sanctionText = '🔇 Timeout de ' + formatDuration(autoSanctionApplied.duration);
-                            break;
-                        case 'kick':
-                            sanctionText = '👢 Expulsion';
-                            break;
-                        case 'ban':
-                            sanctionText = '🔨 Bannissement';
-                            break;
-                    }
-                    logEmbed.addFields({ 
-                        name: '⚙️ Auto-sanction', 
-                        value: sanctionText, 
-                        inline: false 
-                    });
-                }
-                
-                logEmbed.setTimestamp()
+                    )
+                    .setTimestamp()
                     .setFooter({ text: 'Système d\'avertissements SPVM' });
                 
                 await logChannel.send({ embeds: [logEmbed] });
@@ -314,43 +228,10 @@ async function handleWarn(interaction) {
             typeInfo.emoji + ' **Type:** ' + typeInfo.name + '\n' +
             '📊 **Total d\'avertissements:** ' + warnCount + '\n' +
             '🆔 **ID:** `' + warnId + '`'
-        );
-    
-    // Ajouter info auto-sanction
-    if (autoSanctionApplied) {
-        let sanctionText = '';
-        switch (autoSanctionApplied.action) {
-            case 'timeout':
-                sanctionText = '🔇 Timeout de ' + formatDuration(autoSanctionApplied.duration) + ' appliqué';
-                break;
-            case 'kick':
-                sanctionText = '👢 Agent expulsé du serveur';
-                break;
-            case 'ban':
-                sanctionText = '🔨 Agent banni du serveur';
-                break;
-        }
-        confirmEmbed.addFields({ 
-            name: '⚙️ Sanction automatique', 
-            value: sanctionText, 
-            inline: false 
-        });
-    }
-    
-    confirmEmbed.setTimestamp();
+        )
+        .setTimestamp();
     
     await interaction.editReply({ embeds: [confirmEmbed] });
-}
-
-// Fonction utilitaire pour formater la durée
-function formatDuration(ms) {
-    const minutes = Math.floor(ms / 60000);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
-    
-    if (days > 0) return days + ' jour' + (days > 1 ? 's' : '');
-    if (hours > 0) return hours + ' heure' + (hours > 1 ? 's' : '');
-    return minutes + ' minute' + (minutes > 1 ? 's' : '');
 }
 
 // Voir les avertissements
