@@ -10,7 +10,8 @@ const { warnCommands } = require('./warns/warnSystem');
 app.get('/', (req, res) => {
     res.send('Bot SPVM - Système complet en ligne!');
 });
-
+// Système de logs du bot
+const { setupBotLogger, logCommand, logConfig } = require('./logs/botLogger');
 app.listen(PORT, () => {
     console.log('Serveur web sur port ' + PORT);
 });
