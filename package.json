@@ -2,9 +2,9 @@
   "name": "bot-spvm-complet",
   "version": "1.0.0",
   "description": "Bot SPVM",
-  "main": "index.js",
+  "main": "index.cjs",
   "scripts": {
-    "start": "node index.js"
+    "start": "node index.cjs"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
