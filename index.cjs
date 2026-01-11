@@ -1,3 +1,4 @@
+async function main() {
 const { Client, GatewayIntentBits, EmbedBuilder, ActionRowBuilder, ButtonBuilder, ButtonStyle, StringSelectMenuBuilder, StringSelectMenuOptionBuilder, PermissionFlagsBits, ChannelType, ModalBuilder, TextInputBuilder, TextInputStyle } = require('discord.js');
 const express = require('express');
 // Imports auto-modération
@@ -769,3 +770,6 @@ client.on('interactionCreate', async interaction => {
             }
         }
     }
+}
+
+main().catch(console.error);
