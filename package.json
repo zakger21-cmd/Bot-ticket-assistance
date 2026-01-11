@@ -4,7 +4,7 @@
   "description": "Bot SPVM",
   "main": "index.cjs",
   "scripts": {
-    "start": "node index.cjs"
+    "start": "node index.js"
   },
   "dependencies": {
     "discord.js": "^14.14.1",
