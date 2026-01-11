@@ -144,7 +144,10 @@ function parseDate(dateStr) {
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
     
-    console.log('Message reçu:', message.content, 'de', message.author.tag);
+// Seulement logger les commandes qui commencent par !
+if (message.content.startsWith('!')) {
+    console.log('Commande reçue:', message.content, 'de', message.author.tag);
+}
 
     if (message.content === '!setup-absence') {
         console.log('Commande !setup-absence détectée');
