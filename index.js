@@ -48,6 +48,9 @@ client.on('ready', async () => {
     console.log('Système tickets SPVM: ACTIF');
     setInterval(checkAbsences, 3600000);
     checkAbsences();
+    // Système de logs du bot
+    setupBotLogger(client);
+    console.log('Logs du bot: ACTIF');
     // Enregistrer commandes automod
     try {
         const commands = automodCommands.map(cmd => cmd.data.toJSON());
@@ -145,9 +148,9 @@ function parseDate(dateStr) {
 client.on('messageCreate', async message => {
     if (message.author.bot) return;
     
-// Seulement logger les commandes qui commencent par !
+// Seulement logger les commandes
 if (message.content.startsWith('!')) {
-    console.log('Commande reçue:', message.content, 'de', message.author.tag);
+    console.log('Commande reçue:', message.content);
 }
 
     if (message.content === '!setup-absence') {
